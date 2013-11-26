@@ -16,7 +16,7 @@ object Antlr4Plugin extends Plugin {
       in : Set[File] =>
         runAntlr(
           srcFiles = in,
-          targetDir = (javaSource in Antlr4).value,
+          targetBaseDir = (javaSource in Antlr4).value,
           classpath = (managedClasspath in Compile).value.files,
           log = streams.value.log,
           packageName = (packageName in Antlr4).value
@@ -31,7 +31,8 @@ object Antlr4Plugin extends Plugin {
     tokens
   }
 
-  def runAntlr(srcFiles: Set[File], targetDir: File, classpath: Seq[File], log: Logger, packageName: Option[String]) = {
+  def runAntlr(srcFiles: Set[File], targetBaseDir: File, classpath: Seq[File], log: Logger, packageName: Option[String]) = {
+    val targetDir = packageName.map{_.split('.').foldLeft(targetBaseDir){_/_}}.getOrElse(targetBaseDir)
     val baseArgs = Seq("-cp", Path.makeString(classpath), "org.antlr.v4.Tool", "-o", targetDir.toString)
     val packageArgs = packageName.toSeq.flatMap{p => Seq("-package",p)}
     val sourceArgs = srcFiles.map{_.toString}
