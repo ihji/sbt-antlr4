@@ -6,10 +6,9 @@ import Keys._
 object Antlr4Plugin extends Plugin {
   val Antlr4 = config("antlr4")
 
-  val generate = TaskKey[Seq[File]]("generate")
-  val copyTokens = TaskKey[Seq[File]]("copy-tokens")
+  val antlr4Generate = TaskKey[Seq[File]]("antlr4-generate")
   val antlr4Dependency = SettingKey[ModuleID]("antlr4-dependency")
-  val packageName = SettingKey[Option[String]]("antlr4-package-arg")
+  val antlr4PackageName = SettingKey[Option[String]]("antlr4-package-name")
 
   def antlr4GeneratorTask : Def.Initialize[Task[Seq[File]]] = Def.task {
     val cachedCompile = FileFunction.cached(streams.value.cacheDirectory / "antlr4", FilesInfo.lastModified, FilesInfo.exists) {
@@ -19,16 +18,10 @@ object Antlr4Plugin extends Plugin {
           targetBaseDir = (javaSource in Antlr4).value,
           classpath = (managedClasspath in Compile).value.files,
           log = streams.value.log,
-          packageName = (packageName in Antlr4).value
+          packageName = (antlr4PackageName in Antlr4).value
         )
     }
     cachedCompile(((sourceDirectory in Antlr4).value ** "*.g4").get.toSet).toSeq
-  }
-
-  def antlr4CopyTokensTask : Def.Initialize[Task[Seq[File]]] = Def.task {
-    val srcBase = (javaSource in Antlr4).value
-    val tokens = (srcBase ** "*.tokens").get.toSeq
-    tokens
   }
 
   def runAntlr(srcFiles: Set[File], targetBaseDir: File, classpath: Seq[File], log: Logger, packageName: Option[String]) = {
@@ -45,14 +38,12 @@ object Antlr4Plugin extends Plugin {
   val antlr4Settings = inConfig(Antlr4)(Seq(
     sourceDirectory <<= (sourceDirectory in Compile) {_ / "antlr4"},
     javaSource <<= (sourceManaged in Compile) {_ / "java"},
-    generate <<= antlr4GeneratorTask,
-    copyTokens <<= antlr4CopyTokensTask,
+    antlr4Generate <<= antlr4GeneratorTask,
     antlr4Dependency := "org.antlr" % "antlr4" % "4.1",
-    packageName := None
+    antlr4PackageName := None
   )) ++ Seq(
     unmanagedSourceDirectories in Compile <+= (sourceDirectory in Antlr4),
-    sourceGenerators in Compile <+= (generate in Antlr4),
-    resourceGenerators in Compile <+= (copyTokens in Antlr4),
+    sourceGenerators in Compile <+= (antlr4Generate in Antlr4),
     cleanFiles <+= (javaSource in Antlr4),
     libraryDependencies <+= (antlr4Dependency in Antlr4)
   )
