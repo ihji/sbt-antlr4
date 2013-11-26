@@ -9,10 +9,18 @@ object Antlr4Plugin extends Plugin {
   val generate = TaskKey[Seq[File]]("generate")
   val copyTokens = TaskKey[Seq[File]]("copy-tokens")
   val antlr4Dependency = SettingKey[ModuleID]("antlr4-dependency")
+  val packageName = SettingKey[Option[String]]("antlr4-package-arg")
 
   def antlr4GeneratorTask : Def.Initialize[Task[Seq[File]]] = Def.task {
     val cachedCompile = FileFunction.cached(streams.value.cacheDirectory / "antlr4", FilesInfo.lastModified, FilesInfo.exists) {
-      in : Set[File] => runAntlr(in, (javaSource in Antlr4).value, (managedClasspath in Compile).value.files, streams.value.log)
+      in : Set[File] =>
+        runAntlr(
+          srcFiles = in,
+          targetDir = (javaSource in Antlr4).value,
+          classpath = (managedClasspath in Compile).value.files,
+          log = streams.value.log,
+          packageName = (packageName in Antlr4).value
+        )
     }
     cachedCompile(((sourceDirectory in Antlr4).value ** "*.g4").get.toSet).toSeq
   }
@@ -23,9 +31,12 @@ object Antlr4Plugin extends Plugin {
     tokens
   }
 
-  def runAntlr(srcFiles: Set[File], targetDir: File, classpath: Seq[File], log: Logger) = {
-    val args = Seq("-cp", Path.makeString(classpath), "org.antlr.v4.Tool", "-o", targetDir.toString) 
-    val exitCode = Process("java", args++srcFiles.map{_.toString}) ! log
+  def runAntlr(srcFiles: Set[File], targetDir: File, classpath: Seq[File], log: Logger, packageName: Option[String]) = {
+    val baseArgs = Seq("-cp", Path.makeString(classpath), "org.antlr.v4.Tool", "-o", targetDir.toString)
+    val packageArgs = packageName.toSeq.flatMap{p => Seq("-package",p)}
+    val sourceArgs = srcFiles.map{_.toString}
+    val args = baseArgs ++ packageArgs ++ sourceArgs
+    val exitCode = Process("java", args) ! log
     if(exitCode != 0) sys.error(s"Antlr4 failed with exit code $exitCode")
     (targetDir ** "*.java").get.toSet
   }
@@ -35,7 +46,8 @@ object Antlr4Plugin extends Plugin {
     javaSource <<= (sourceManaged in Compile) {_ / "java"},
     generate <<= antlr4GeneratorTask,
     copyTokens <<= antlr4CopyTokensTask,
-    antlr4Dependency := "org.antlr" % "antlr4" % "4.1"
+    antlr4Dependency := "org.antlr" % "antlr4" % "4.1",
+    packageName := None
   )) ++ Seq(
     unmanagedSourceDirectories in Compile <+= (sourceDirectory in Antlr4),
     sourceGenerators in Compile <+= (generate in Antlr4),
