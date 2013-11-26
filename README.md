@@ -14,6 +14,12 @@ file with the following contents:
 And, add `antlr4Settings` to your `build.sbt` file.
 
     antlr4Settings
+
+## Settings
+
+`-package` option can be given by the following setting:
+
+    packageName in Antlr4 := Some("com.simplytyped")
  
 ## License
 
