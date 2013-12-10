@@ -20,6 +20,12 @@ And, add `antlr4Settings` to your `build.sbt` file.
 `-package` option can be given by the following setting:
 
     antlr4PackageName in Antlr4 := Some("com.simplytyped")
+
+You can also adjust `-listener`, `-no-listener`, `-visitor`, `-no-visitor` options:
+
+    antlr4GenListener in Antlr4 := true // default: true
+
+    antlr4GenVisitor in Antlr4 := false // default: false
  
 ## License
 
