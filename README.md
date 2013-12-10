@@ -9,7 +9,7 @@ file with the following contents:
 
     resolvers += "simplytyped.com" at "http://simplytyped.com/repo/releases"
 
-    addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.5")
+    addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.6")
 
 And, add `antlr4Settings` to your `build.sbt` file.
 
