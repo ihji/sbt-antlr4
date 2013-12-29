@@ -57,7 +57,7 @@ object Antlr4Plugin extends Plugin {
     antlr4GenListener := true,
     antlr4GenVisitor := false
   )) ++ Seq(
-    unmanagedSourceDirectories in Compile <+= (sourceDirectory in Antlr4),
+    managedSourceDirectories in Compile <+= (javaSource in Antlr4),
     sourceGenerators in Compile <+= (antlr4Generate in Antlr4),
     cleanFiles <+= (javaSource in Antlr4),
     libraryDependencies <+= (antlr4Dependency in Antlr4)
