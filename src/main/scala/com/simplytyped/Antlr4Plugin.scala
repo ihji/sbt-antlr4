@@ -50,7 +50,7 @@ object Antlr4Plugin extends Plugin {
 
   val antlr4Settings = inConfig(Antlr4)(Seq(
     sourceDirectory <<= (sourceDirectory in Compile) {_ / "antlr4"},
-    javaSource <<= (sourceManaged in Compile) {_ / "java"},
+    javaSource <<= sourceManaged in Compile,
     antlr4Generate <<= antlr4GeneratorTask,
     antlr4Dependency := "org.antlr" % "antlr4" % "4.1",
     antlr4PackageName := None,
