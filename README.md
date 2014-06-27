@@ -9,7 +9,7 @@ file with the following contents:
 
     resolvers += "simplytyped.com" at "http://simplytyped.com/repo/releases"
 
-    addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.7.1")
+    addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.7.2")
 
 And, add `antlr4Settings` to your `build.sbt` file.
 
@@ -27,6 +27,12 @@ You can also adjust `-listener`, `-no-listener`, `-visitor`, `-no-visitor` optio
 
     antlr4GenVisitor in Antlr4 := false // default: false
  
+## Version History
+
+  - `0.7.2`: Antlr 4.3
+
+  - `0.7.1`: Antlr 4.2
+
 ## License
 
 Licensed under the Apache License, Version 2.0 (the "License");
