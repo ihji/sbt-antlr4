@@ -29,6 +29,8 @@ You can also adjust `-listener`, `-no-listener`, `-visitor`, `-no-visitor` optio
  
 ## Version History
 
+  - `0.7.3`: Antlr 4.4
+
   - `0.7.2`: Antlr 4.3
 
   - `0.7.1`: Antlr 4.2
