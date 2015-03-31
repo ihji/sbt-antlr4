@@ -4,7 +4,7 @@ name := "sbt-antlr4"
 
 organization := "com.simplytyped"
 
-version := "0.7.3"
+version := "0.7.4"
 
 publishTo := Some {
   val target = if(version.value contains "SNAPSHOT") "snapshots" else "releases"
