@@ -59,6 +59,7 @@ object Antlr4Plugin extends Plugin {
   )) ++ Seq(
     managedSourceDirectories in Compile <+= (javaSource in Antlr4),
     sourceGenerators in Compile <+= (antlr4Generate in Antlr4),
+    watchSources <++= sourceDirectory map {path => (path ** "*.g4").get},
     cleanFiles <+= (javaSource in Antlr4),
     libraryDependencies <+= (antlr4Dependency in Antlr4)
   )
