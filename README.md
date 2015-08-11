@@ -9,7 +9,7 @@ file with the following contents:
 
     resolvers += "simplytyped" at "http://simplytyped.github.io/repo/releases"
 
-    addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.7.6")
+    addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.7.7")
 
 And, add `antlr4Settings` to your `build.sbt` file.
 
@@ -29,7 +29,9 @@ You can also adjust `-listener`, `-no-listener`, `-visitor`, `-no-visitor` optio
  
 ## Version History
 
-  - `0.7.6`: Triggered execution fixed
+  - `0.7.7`: Separate antlr4 runtime and build dependency (@thetristan)
+
+  - `0.7.6`: Triggered execution fixed (@marconilanna)
 
   - `0.7.5`: Antlr 4.5.1
 
