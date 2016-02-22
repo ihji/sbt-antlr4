@@ -9,7 +9,7 @@ file with the following contents:
 
     resolvers += "simplytyped" at "http://simplytyped.github.io/repo/releases"
 
-    addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.7.8")
+    addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.7.9")
 
 And, add `antlr4Settings` to your `build.sbt` file.
 
@@ -28,6 +28,8 @@ You can also adjust `-listener`, `-no-listener`, `-visitor`, `-no-visitor` optio
     antlr4GenVisitor in Antlr4 := false // default: false
  
 ## Version History
+
+  - `0.7.9`: Antlr 4.5.2 (@marconilanna)
 
   - `0.7.8`: Appends 'antlr4' to the javaSource directory for generated Java code (@allertonm)
 
