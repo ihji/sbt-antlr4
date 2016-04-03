@@ -1,5 +1,7 @@
 ## Version History
 
+  - `0.7.11`: Antlr 4.5.3 (@marconilanna)
+
   - `0.7.10`: Antlr 4.5.2-1 (@marconilanna)
 
   - `0.7.9`: Antlr 4.5.2 (@marconilanna)
