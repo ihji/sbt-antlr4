@@ -54,7 +54,7 @@ object Antlr4Plugin extends Plugin {
 
   val antlr4Settings = inConfig(Antlr4)(Seq(
     sourceDirectory <<= (sourceDirectory in Compile) {_ / "antlr4"},
-    javaSource <<= (sourceManaged in Compile).apply(_ / "antlr4"),
+    javaSource <<= (sourceManaged in Compile).apply(_ / "java"),
     managedClasspath <<= (configuration, classpathTypes, update) map Classpaths.managedJars,
     antlr4Version := "4.5.3",
     antlr4Generate <<= antlr4GeneratorTask,
