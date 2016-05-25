@@ -6,7 +6,6 @@ organization := "com.simplytyped"
 
 version := "0.7.9"
 
-publishTo := Some {
-  val target = if(version.value contains "SNAPSHOT") "snapshots" else "releases"
-  Resolver.file("simplytyped.com", new File("/Users/ihji/Works/simplytyped.github.io/repo",target))
-}
+bintrayOrganization := Some("simplytyped")
+
+licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0"))
