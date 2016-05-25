@@ -56,7 +56,7 @@ object Antlr4Plugin extends Plugin {
     sourceDirectory <<= (sourceDirectory in Compile) {_ / "antlr4"},
     javaSource <<= (sourceManaged in Compile).apply(_ / "antlr4"),
     managedClasspath <<= (configuration, classpathTypes, update) map Classpaths.managedJars,
-    antlr4Version := "4.5.2",
+    antlr4Version := "4.5.3",
     antlr4Generate <<= antlr4GeneratorTask,
     antlr4Dependency := "org.antlr" % "antlr4" % antlr4Version.value,
     antlr4RuntimeDependency := "org.antlr" % "antlr4-runtime" % antlr4Version.value,
