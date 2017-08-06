@@ -15,6 +15,10 @@ And, add `antlr4Settings` to your `build.sbt` file.
 
 ## Settings
 
+You can select an antl4 version with:
+
+    antlr4Version in Antlr4 := "4.7"
+
 `-package` option can be given by the following setting:
 
     antlr4PackageName in Antlr4 := Some("com.simplytyped")
