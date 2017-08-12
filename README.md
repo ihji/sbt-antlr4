@@ -1,21 +1,29 @@
 # sbt-antlr4
 
-This plugin provides an ability to run antlr4 when compiling in sbt 0.13.
+This plugin provides an ability to run antlr4 when compiling in sbt 1.0.x and 0.13.x.
 
 ## How to use
 
 Put your .g4 files in `src/main/antlr4` directory and make `project/sbt-antlr4.sbt`
 file with the following contents:
 
+    // sbt 1.0.x
+    addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.8.0")
+
+    // sbt 0.13.x
     addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.7.12")
 
-And, add `antlr4Settings` to your `build.sbt` file.
+And, enable the plugin in your `build.sbt` file.
 
+    // sbt 1.0.x
+    enablePlugins(Antlr4Plugin)
+
+    // sbt 0.13.x
     antlr4Settings
 
 ## Settings
 
-`-package` option can be given by the following setting:
+`-package` option can be defined by the following setting:
 
     antlr4PackageName in Antlr4 := Some("com.simplytyped")
 
