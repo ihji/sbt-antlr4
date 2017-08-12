@@ -1,6 +1,8 @@
 ## Version History
 
-  - `0.7.12`: Antlr 4.6.0
+  - `0.8.0`: Antlr 4.6.0, sbt 1.0.x compatible
+
+  - `0.7.12`: Antlr 4.6.0, sbt 0.13.x compatible
 
   - `0.7.11`: Antlr 4.5.3 (@marconilanna)
 
