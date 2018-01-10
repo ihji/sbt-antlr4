@@ -9,17 +9,17 @@ import scala.sys.process.Process
 object Antlr4Plugin extends AutoPlugin {
   object autoImport {
     val Antlr4 = config("antlr4")
-    val antlr4Version = SettingKey[String]("Version of antlr4")
-    val antlr4Generate = TaskKey[Seq[File]]("Generate classes from antlr4 grammars")
-    val antlr4RuntimeDependency = SettingKey[ModuleID]("Library dependency for antlr4 runtime")
-    val antlr4Dependency = SettingKey[ModuleID]("Build dependency required for parsing grammars")
-    val antlr4PackageName = SettingKey[Option[String]]("Name of the package for generated classes")
-    val antlr4GenListener = SettingKey[Boolean]("Generate listener")
-    val antlr4GenVisitor = SettingKey[Boolean]("Generate visitor")
+    val antlr4Version = settingKey[String]("Version of antlr4")
+    val antlr4Generate = taskKey[Seq[File]]("Generate classes from antlr4 grammars")
+    val antlr4RuntimeDependency = settingKey[ModuleID]("Library dependency for antlr4 runtime")
+    val antlr4Dependency = settingKey[ModuleID]("Build dependency required for parsing grammars")
+    val antlr4PackageName = settingKey[Option[String]]("Name of the package for generated classes")
+    val antlr4GenListener = settingKey[Boolean]("Generate listener")
+    val antlr4GenVisitor = settingKey[Boolean]("Generate visitor")
   }
   import autoImport._
 
-  private val antlr4BuildDependency = SettingKey[ModuleID]("Build dependency required for parsing grammars, scoped to plugin")
+  private val antlr4BuildDependency = settingKey[ModuleID]("Build dependency required for parsing grammars, scoped to plugin")
 
   def antlr4GeneratorTask : Def.Initialize[Task[Seq[File]]] = Def.task {
     val targetBaseDir = (javaSource in Antlr4).value
