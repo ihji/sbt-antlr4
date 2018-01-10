@@ -1,5 +1,7 @@
 ## Version History
 
+  - `0.8.1`: Antlr 4.7.1, sbt 1.1.x compatible
+
   - `0.8.0`: Antlr 4.6.0, sbt 1.0.x compatible
 
   - `0.7.12`: Antlr 4.6.0, sbt 0.13.x compatible
