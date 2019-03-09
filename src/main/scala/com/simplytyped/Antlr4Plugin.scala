@@ -62,7 +62,7 @@ object Antlr4Plugin extends AutoPlugin {
     val visitorArgs = if(visitorOpt) Seq("-visitor") else Seq("-no-visitor")
     val warningAsErrorArgs = if (warningsAsErrorOpt) Seq("-Werror") else Seq.empty
     val sourceArgs = srcFiles.map{_.toString}
-    val args = baseArgs ++ packageArgs ++ listenerArgs ++ visitorArgs ++ sourceArgs ++ warningAsErrorArgs
+    val args = baseArgs ++ packageArgs ++ listenerArgs ++ visitorArgs ++ warningAsErrorArgs ++ sourceArgs
     val exitCode = Process("java", args) ! log
     if(exitCode != 0) sys.error(s"Antlr4 failed with exit code $exitCode")
     (targetDir ** "*.java").get.toSet
@@ -80,7 +80,7 @@ object Antlr4Plugin extends AutoPlugin {
     antlr4PackageName := None,
     antlr4GenListener := true,
     antlr4GenVisitor := false,
-    antlr4TreatWarningsAsErrors := true
+    antlr4TreatWarningsAsErrors := false
   )) ++ Seq(
     ivyConfigurations += Antlr4,
     managedSourceDirectories in Compile += (javaSource in Antlr4).value,
