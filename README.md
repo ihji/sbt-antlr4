@@ -11,7 +11,7 @@ file with the following contents:
     addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.8.2")
 
     // sbt 0.13.x
-    addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.7.12")
+    addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.7.13")
 
 And, enable the plugin in your `build.sbt` file.
 
