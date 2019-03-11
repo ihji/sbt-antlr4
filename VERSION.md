@@ -1,5 +1,7 @@
 ## Version History
 
+  - `0.7.13`: Antlr 4.7.2, adding -Werror option (@dilipbiswal)
+
   - `0.7.12`: Antlr 4.6.0
 
   - `0.7.11`: Antlr 4.5.3 (@marconilanna)
