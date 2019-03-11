@@ -13,6 +13,7 @@ object Antlr4Plugin extends Plugin {
   val antlr4PackageName = SettingKey[Option[String]]("Name of the package for generated classes")
   val antlr4GenListener = SettingKey[Boolean]("Generate listener")
   val antlr4GenVisitor = SettingKey[Boolean]("Generate visitor")
+  val antlr4TreatWarningsAsErrors = SettingKey[Boolean]("Treat warnings as errors when generating parser")
 
   private val antlr4BuildDependency = SettingKey[ModuleID]("Build dependency required for parsing grammars, scoped to plugin")
 
@@ -26,7 +27,8 @@ object Antlr4Plugin extends Plugin {
           log = streams.value.log,
           packageName = (antlr4PackageName in Antlr4).value,
           listenerOpt = (antlr4GenListener in Antlr4).value,
-          visitorOpt = (antlr4GenVisitor in Antlr4).value
+          visitorOpt = (antlr4GenVisitor in Antlr4).value,
+          warningsAsErrorOpt = (antlr4TreatWarningsAsErrors in Antlr4).value
         )
     }
     cachedCompile(((sourceDirectory in Antlr4).value ** "*.g4").get.toSet).toSeq
@@ -39,14 +41,16 @@ object Antlr4Plugin extends Plugin {
       log: Logger,
       packageName: Option[String],
       listenerOpt: Boolean,
-      visitorOpt: Boolean) = {
+      visitorOpt: Boolean,
+      warningsAsErrorOpt: Boolean) = {
     val targetDir = packageName.map{_.split('.').foldLeft(targetBaseDir){_/_}}.getOrElse(targetBaseDir)
     val baseArgs = Seq("-cp", Path.makeString(classpath), "org.antlr.v4.Tool", "-o", targetDir.toString)
     val packageArgs = packageName.toSeq.flatMap{p => Seq("-package",p)}
     val listenerArgs = if(listenerOpt) Seq("-listener") else Seq("-no-listener")
     val visitorArgs = if(visitorOpt) Seq("-visitor") else Seq("-no-visitor")
     val sourceArgs = srcFiles.map{_.toString}
-    val args = baseArgs ++ packageArgs ++ listenerArgs ++ visitorArgs ++ sourceArgs
+    val warningAsErrorArgs = if (warningsAsErrorOpt) Seq("-Werror") else Seq.empty
+    val args = baseArgs ++ packageArgs ++ listenerArgs ++ visitorArgs ++ warningAsErrorArgs ++ sourceArgs 
     val exitCode = Process("java", args) ! log
     if(exitCode != 0) sys.error(s"Antlr4 failed with exit code $exitCode")
     (targetDir ** "*.java").get.toSet
@@ -63,7 +67,8 @@ object Antlr4Plugin extends Plugin {
     antlr4BuildDependency := antlr4Dependency.value % Antlr4.name,
     antlr4PackageName := None,
     antlr4GenListener := true,
-    antlr4GenVisitor := false
+    antlr4GenVisitor := false,
+    antlr4TreatWarningsAsErrors := false
   )) ++ Seq(
     ivyConfigurations += Antlr4,
     managedSourceDirectories in Compile <+= (javaSource in Antlr4),
