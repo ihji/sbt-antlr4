@@ -31,11 +31,13 @@ You can select an antl4 version with:
 
     antlr4PackageName in Antlr4 := Some("com.simplytyped")
 
-You can also adjust `-listener`, `-no-listener`, `-visitor`, `-no-visitor` options:
+You can also adjust `-listener`, `-no-listener`, `-visitor`, `-no-visitor`, `Werror` options:
 
     antlr4GenListener in Antlr4 := true // default: true
 
     antlr4GenVisitor in Antlr4 := false // default: false
+
+    antlr4TreatWarningsAsErrors in Antlr4 := true // default: false
  
 ## License
 
