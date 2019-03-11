@@ -8,7 +8,7 @@ Put your .g4 files in `src/main/antlr4` directory and make `project/sbt-antlr4.s
 file with the following contents:
 
     // sbt 1.1.x
-    addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.8.1")
+    addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.8.2")
 
     // sbt 0.13.x
     addSbtPlugin("com.simplytyped" % "sbt-antlr4" % "0.7.12")

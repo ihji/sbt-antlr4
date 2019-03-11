@@ -4,7 +4,7 @@ name := "sbt-antlr4"
 
 organization := "com.simplytyped"
 
-version := "0.8.1"
+version := "0.8.2"
 
 bintrayOrganization := Some("simplytyped")
 
