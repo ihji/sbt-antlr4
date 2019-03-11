@@ -13,7 +13,7 @@ object Antlr4Plugin extends Plugin {
   val antlr4PackageName = SettingKey[Option[String]]("Name of the package for generated classes")
   val antlr4GenListener = SettingKey[Boolean]("Generate listener")
   val antlr4GenVisitor = SettingKey[Boolean]("Generate visitor")
-  val antlr4TreatWarningsAsErrors = settingKey[Boolean]("Treat warnings as errors when generating parser")
+  val antlr4TreatWarningsAsErrors = SettingKey[Boolean]("Treat warnings as errors when generating parser")
 
   private val antlr4BuildDependency = SettingKey[ModuleID]("Build dependency required for parsing grammars, scoped to plugin")
 
