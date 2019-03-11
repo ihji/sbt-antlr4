@@ -25,7 +25,7 @@ And, enable the plugin in your `build.sbt` file.
 
 You can select an antl4 version with:
 
-    antlr4Version in Antlr4 := "4.7.1"
+    antlr4Version in Antlr4 := "4.7.2" // default: 4.7.2
 
 `-package` option can be defined by the following setting:
 
