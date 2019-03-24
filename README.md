@@ -21,6 +21,9 @@ And, enable the plugin in your `build.sbt` file.
     // sbt 0.13.x
     antlr4Settings
 
+Now, whenever you invoke `sbt compile` the ANTLR artifacts will be written to
+`./target/scala-XX.YY/sources_managed/main/antlr4` (depending on your Scala version).
+
 ## Settings
 
 You can select an antl4 version with:
