@@ -72,7 +72,7 @@ object Antlr4Plugin extends AutoPlugin {
     sourceDirectory := (sourceDirectory in Compile).value / "antlr4",
     javaSource := (sourceManaged in Compile).value / "antlr4",
     managedClasspath := Classpaths.managedJars(configuration.value, classpathTypes.value, update.value),
-    antlr4Version := "4.7.2",
+    antlr4Version := "4.8-1",
     antlr4Generate := antlr4GeneratorTask.value,
     antlr4Dependency := "org.antlr" % "antlr4" % antlr4Version.value,
     antlr4RuntimeDependency := "org.antlr" % "antlr4-runtime" % antlr4Version.value,
