@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * License); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an AS IS BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.simplytyped
 
 import sbt._
@@ -23,13 +41,13 @@ object Antlr4Plugin extends AutoPlugin {
   private val antlr4BuildDependency = settingKey[ModuleID]("Build dependency required for parsing grammars, scoped to plugin")
 
   def antlr4GeneratorTask : Def.Initialize[Task[Seq[File]]] = Def.task {
-    val targetBaseDir = (javaSource in Antlr4).value
-    val classpath = (managedClasspath in Antlr4).value.files
+    val targetBaseDir = (Antlr4 / javaSource).value
+    val classpath = (Antlr4 / managedClasspath).value.files
     val log = streams.value.log
-    val packageName = (antlr4PackageName in Antlr4).value
-    val listenerOpt = (antlr4GenListener in Antlr4).value
-    val visitorOpt = (antlr4GenVisitor in Antlr4).value
-    val warningsAsErrorOpt = (antlr4TreatWarningsAsErrors in Antlr4).value
+    val packageName = (Antlr4 / antlr4PackageName).value
+    val listenerOpt = (Antlr4 / antlr4GenListener).value
+    val visitorOpt = (Antlr4 / antlr4GenVisitor).value
+    val warningsAsErrorOpt = (Antlr4 / antlr4TreatWarningsAsErrors).value
     val cachedCompile = FileFunction.cached(streams.value.cacheDirectory / "antlr4", FilesInfo.lastModified, FilesInfo.exists) {
       in : Set[File] =>
         runAntlr(
@@ -43,7 +61,7 @@ object Antlr4Plugin extends AutoPlugin {
           warningsAsErrorOpt = warningsAsErrorOpt
         )
     }
-    cachedCompile(((sourceDirectory in Antlr4).value ** "*.g4").get.toSet).toSeq
+    cachedCompile(((Antlr4 / sourceDirectory).value ** "*.g4").get.toSet).toSeq
   }
 
   def runAntlr(
@@ -69,8 +87,8 @@ object Antlr4Plugin extends AutoPlugin {
   }
 
   override def projectSettings = inConfig(Antlr4)(Seq(
-    sourceDirectory := (sourceDirectory in Compile).value / "antlr4",
-    javaSource := (sourceManaged in Compile).value / "antlr4",
+    sourceDirectory := (Compile / sourceDirectory).value / "antlr4",
+    javaSource := (Compile / sourceManaged).value / "antlr4",
     managedClasspath := Classpaths.managedJars(configuration.value, classpathTypes.value, update.value),
     antlr4Version := "4.8-1",
     antlr4Generate := antlr4GeneratorTask.value,
@@ -83,11 +101,11 @@ object Antlr4Plugin extends AutoPlugin {
     antlr4TreatWarningsAsErrors := false
   )) ++ Seq(
     ivyConfigurations += Antlr4,
-    managedSourceDirectories in Compile += (javaSource in Antlr4).value,
-    sourceGenerators in Compile += (antlr4Generate in Antlr4).taskValue,
+    Compile / managedSourceDirectories += (Antlr4 / javaSource).value,
+    Compile / sourceGenerators += (Antlr4 / antlr4Generate).taskValue,
     watchSources += new Source(sourceDirectory.value, "*.g4", HiddenFileFilter),
-    cleanFiles += (javaSource in Antlr4).value,
-    libraryDependencies += (antlr4BuildDependency in Antlr4).value,
-    libraryDependencies += (antlr4RuntimeDependency in Antlr4).value
+    cleanFiles += (Antlr4 / javaSource).value,
+    libraryDependencies += (Antlr4 / antlr4BuildDependency).value,
+    libraryDependencies += (Antlr4 / antlr4RuntimeDependency).value
   )
 }
