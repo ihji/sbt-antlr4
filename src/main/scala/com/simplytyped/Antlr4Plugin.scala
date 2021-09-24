@@ -35,6 +35,7 @@ object Antlr4Plugin extends AutoPlugin {
     val antlr4GenListener = settingKey[Boolean]("Generate listener")
     val antlr4GenVisitor = settingKey[Boolean]("Generate visitor")
     val antlr4TreatWarningsAsErrors = settingKey[Boolean]("Treat warnings as errors when generating parser")
+    val javaBinaryPath = settingKey[Option[String]]("Path to Java binary")
   }
   import autoImport._
 
@@ -48,6 +49,7 @@ object Antlr4Plugin extends AutoPlugin {
     val listenerOpt = (Antlr4 / antlr4GenListener).value
     val visitorOpt = (Antlr4 / antlr4GenVisitor).value
     val warningsAsErrorOpt = (Antlr4 / antlr4TreatWarningsAsErrors).value
+    val javaBinaryPathOpt = (Antlr4 / javaBinaryPath).value
     val cachedCompile = FileFunction.cached(streams.value.cacheDirectory / "antlr4", FilesInfo.lastModified, FilesInfo.exists) {
       in : Set[File] =>
         runAntlr(
@@ -58,7 +60,8 @@ object Antlr4Plugin extends AutoPlugin {
           packageName = packageName,
           listenerOpt = listenerOpt,
           visitorOpt = visitorOpt,
-          warningsAsErrorOpt = warningsAsErrorOpt
+          warningsAsErrorOpt = warningsAsErrorOpt,
+          javaBinaryPathOpt = javaBinaryPathOpt
         )
     }
     cachedCompile(((Antlr4 / sourceDirectory).value ** "*.g4").get.toSet).toSeq
@@ -72,7 +75,8 @@ object Antlr4Plugin extends AutoPlugin {
       packageName: Option[String],
       listenerOpt: Boolean,
       visitorOpt: Boolean,
-      warningsAsErrorOpt: Boolean) = {
+      warningsAsErrorOpt: Boolean,
+      javaBinaryPathOpt: Option[String]) = {
     val targetDir = packageName.map{_.split('.').foldLeft(targetBaseDir){_/_}}.getOrElse(targetBaseDir)
     val baseArgs = Seq("-cp", Path.makeString(classpath), "org.antlr.v4.Tool", "-o", targetDir.toString)
     val packageArgs = packageName.toSeq.flatMap{p => Seq("-package",p)}
@@ -81,7 +85,7 @@ object Antlr4Plugin extends AutoPlugin {
     val warningAsErrorArgs = if (warningsAsErrorOpt) Seq("-Werror") else Seq.empty
     val sourceArgs = srcFiles.map{_.toString}
     val args = baseArgs ++ packageArgs ++ listenerArgs ++ visitorArgs ++ warningAsErrorArgs ++ sourceArgs
-    val exitCode = Process("java", args) ! log
+    val exitCode = Process(javaBinaryPathOpt.getOrElse("java"), args) ! log
     if(exitCode != 0) sys.error(s"Antlr4 failed with exit code $exitCode")
     (targetDir ** "*.java").get.toSet
   }
@@ -98,7 +102,8 @@ object Antlr4Plugin extends AutoPlugin {
     antlr4PackageName := None,
     antlr4GenListener := true,
     antlr4GenVisitor := false,
-    antlr4TreatWarningsAsErrors := false
+    antlr4TreatWarningsAsErrors := false,
+    javaBinaryPath := None
   )) ++ Seq(
     ivyConfigurations += Antlr4,
     Compile / managedSourceDirectories += (Antlr4 / javaSource).value,
