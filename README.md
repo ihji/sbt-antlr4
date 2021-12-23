@@ -1,6 +1,6 @@
 # sbt-antlr4
 
-[![Build Status](https://travis-ci.com/ihji/sbt-antlr4.svg?branch=master)](https://travis-ci.com/ihji/sbt-antlr4)
+[![Build Status](https://github.com/ihji/sbt-antlr4/actions/workflows/scala.yml/badge.svg)](https://github.com/ihji/sbt-antlr4/actions/workflows/scala.yml)
 
 This plugin provides an ability to run antlr4 when compiling in sbt 1.1.x and 0.13.x.
 
