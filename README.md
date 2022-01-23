@@ -43,6 +43,10 @@ You can also adjust `-listener`, `-no-listener`, `-visitor`, `-no-visitor`, `-We
     antlr4GenVisitor in Antlr4 := false // default: false
 
     antlr4TreatWarningsAsErrors in Antlr4 := true // default: false
+
+The plugin calls the java binary to execute ANTLR. By default it expects it in the path, but a custom path can be defined by the following setting:
+
+    javaBinaryPath in Antlr4 := Some("/usr/bin/java") // default: None
  
 ## License
 
